@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Understand Deeply - Options</title>
+    <link rel="stylesheet" href="../../dist/options.css" />
+  </head>
+  <body class="ud-bg-slate-950 ud-text-slate-100 ud-min-h-screen ud-font-sans">
+    <main class="ud-max-w-4xl ud-mx-auto ud-p-6 ud-space-y-6">
+      <section class="ud-bg-slate-900 ud-border ud-border-slate-800 ud-rounded-2xl ud-p-5 ud-space-y-4">
+        <h1 class="ud-text-xl ud-font-semibold">Understand Deeply</h1>
+        <p class="ud-text-sm ud-text-slate-300">Configure your Groq key and model for selected-text deep explanations.</p>
+
+        <form id="settings-form" class="ud-space-y-4">
+          <label class="ud-block ud-space-y-2">
+            <span class="ud-text-sm ud-font-medium">Groq API Key</span>
+            <input id="api-key" type="password" class="ud-w-full ud-bg-slate-800 ud-border ud-border-slate-700 ud-rounded-lg ud-px-3 ud-py-2 ud-outline-none focus:ud-border-slate-500" placeholder="gsk_..." required />
+          </label>
+
+          <label class="ud-block ud-space-y-2">
+            <span class="ud-text-sm ud-font-medium">Model</span>
+            <input id="model" type="text" class="ud-w-full ud-bg-slate-800 ud-border ud-border-slate-700 ud-rounded-lg ud-px-3 ud-py-2 ud-outline-none focus:ud-border-slate-500" value="moonshotai/kimi-k2-instruct-0905" required />
+          </label>
+
+          <label class="ud-block ud-space-y-2">
+            <span class="ud-text-sm ud-font-medium">Depth preset</span>
+            <select id="depth" class="ud-w-full ud-bg-slate-800 ud-border ud-border-slate-700 ud-rounded-lg ud-px-3 ud-py-2 ud-outline-none focus:ud-border-slate-500">
+              <option value="very-deep">Very Deep</option>
+              <option value="medium">Medium</option>
+              <option value="short">Short</option>
+            </select>
+          </label>
+
+          <div class="ud-flex ud-items-center ud-gap-3">
+            <button type="submit" class="ud-bg-slate-100 ud-text-slate-900 ud-font-semibold ud-px-4 ud-py-2 ud-rounded-lg hover:ud-bg-white">Save settings</button>
+            <button id="test-api" type="button" class="ud-bg-slate-700 ud-text-slate-100 ud-font-semibold ud-px-4 ud-py-2 ud-rounded-lg hover:ud-bg-slate-600">Test API key</button>
+            <p id="save-status" class="ud-text-sm ud-text-slate-300"></p>
+          </div>
+        </form>
+      </section>
+
+      <section class="ud-bg-slate-900 ud-border ud-border-slate-800 ud-rounded-2xl ud-p-5 ud-space-y-4">
+        <div class="ud-flex ud-items-center ud-justify-between">
+          <h2 class="ud-text-lg ud-font-semibold">Recent History</h2>
+          <button id="clear-history" type="button" class="ud-text-sm ud-bg-slate-700 ud-px-3 ud-py-1.5 ud-rounded-md hover:ud-bg-slate-600">Clear all</button>
+        </div>
+        <p class="ud-text-xs ud-text-slate-400">Triggers: Ctrl+Shift+Y for deep explain, or type wzz for a short 3-5 line definition.</p>
+        <div id="history-list" class="ud-space-y-3"></div>
+      </section>
+    </main>
+
+    <script src="options.js"></script>
+  </body>
+</html>

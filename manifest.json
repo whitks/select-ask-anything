@@ -1,0 +1,32 @@
+{
+  "manifest_version": 3,
+  "name": "Understand Deeply",
+  "description": "Select text and get a deep AI explanation in-page.",
+  "version": "0.1.0",
+  "permissions": ["storage", "activeTab"],
+  "host_permissions": ["https://api.groq.com/*", "<all_urls>"],
+  "background": {
+    "service_worker": "src/background/service-worker.js"
+  },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["src/content/content-script.js"],
+      "css": ["dist/content.css"],
+      "run_at": "document_idle"
+    }
+  ],
+  "options_page": "src/options/options.html",
+  "commands": {
+    "explain-selected-text": {
+      "suggested_key": {
+        "default": "Ctrl+Shift+Y",
+        "mac": "Command+Shift+Y"
+      },
+      "description": "Deeply explain selected text"
+    }
+  },
+  "action": {
+    "default_title": "Understand Deeply"
+  }
+}

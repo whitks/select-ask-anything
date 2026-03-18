@@ -1,0 +1,12 @@
+{
+  "name": "understand-deeply-extension",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "build:css": "tailwindcss -i ./src/styles/input.css -o ./dist/content.css --minify && tailwindcss -i ./src/styles/options-input.css -o ./dist/options.css --minify",
+    "watch:css": "tailwindcss -i ./src/styles/input.css -o ./dist/content.css --watch"
+  },
+  "devDependencies": {
+    "tailwindcss": "^3.4.17"
+  }
+}
