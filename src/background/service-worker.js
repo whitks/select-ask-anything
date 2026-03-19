@@ -7,21 +7,24 @@ const DEFAULT_SETTINGS = {
   requestTimeoutMs: 45000
 };
 
+// Polyfill for cross-browser compatibility
+const browser = globalThis.browser || globalThis.chrome;
+
 const activeStreamControllers = new Map();
 
 function storageGet(keys) {
-  return new Promise((resolve) => chrome.storage.local.get(keys, resolve));
+  return new Promise((resolve) => browser.storage.local.get(keys, resolve));
 }
 
 function storageSet(values) {
-  return new Promise((resolve) => chrome.storage.local.set(values, resolve));
+  return new Promise((resolve) => browser.storage.local.set(values, resolve));
 }
 
 function getActiveTab() {
   return new Promise((resolve, reject) => {
-    chrome.tabs.query({ active: true, lastFocusedWindow: true }, (tabs) => {
-      if (chrome.runtime.lastError) {
-        reject(new Error(chrome.runtime.lastError.message));
+    browser.tabs.query({ active: true, lastFocusedWindow: true }, (tabs) => {
+      if (browser.runtime.lastError) {
+        reject(new Error(browser.runtime.lastError.message));
         return;
       }
       if (!tabs.length || !tabs[0].id) {
@@ -98,14 +101,14 @@ async function saveHistoryEntry(entry, maxHistoryItems) {
 }
 
 function sendStreamEvent(tabId, payload) {
-  chrome.tabs.sendMessage(tabId, { type: "DEEP_EXPLAIN_STREAM", payload }, () => {
-    void chrome.runtime.lastError;
+  browser.tabs.sendMessage(tabId, { type: "DEEP_EXPLAIN_STREAM", payload }, () => {
+    void browser.runtime.lastError;
   });
 }
 
 function dispatchExplainTrigger(tabId) {
-  chrome.tabs.sendMessage(tabId, { type: "DEEP_EXPLAIN_TRIGGER" }, () => {
-    void chrome.runtime.lastError;
+  browser.tabs.sendMessage(tabId, { type: "DEEP_EXPLAIN_TRIGGER" }, () => {
+    void browser.runtime.lastError;
   });
 }
 
@@ -220,7 +223,7 @@ async function streamGroqExplanation({ requestId, apiKey, model, prompt, timeout
   }
 }
 
-chrome.runtime.onInstalled.addListener(async () => {
+browser.runtime.onInstalled.addListener(async () => {
   const current = await storageGet(Object.keys(DEFAULT_SETTINGS));
   const init = {};
 
@@ -235,7 +238,7 @@ chrome.runtime.onInstalled.addListener(async () => {
   }
 });
 
-chrome.commands.onCommand.addListener(async (command) => {
+browser.commands.onCommand.addListener(async (command) => {
   if (command !== "explain-selected-text") {
     return;
   }
@@ -248,13 +251,13 @@ chrome.commands.onCommand.addListener(async (command) => {
   }
 });
 
-chrome.action.onClicked.addListener((tab) => {
+browser.action.onClicked.addListener((tab) => {
   if (tab?.id) {
     dispatchExplainTrigger(tab.id);
   }
 });
 
-chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+browser.runtime.onMessage.addListener((message, sender, sendResponse) => {
   if (message?.type === "DEEP_EXPLAIN_HEALTHCHECK") {
     (async () => {
       try {

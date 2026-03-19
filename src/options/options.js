@@ -4,12 +4,14 @@ const DEFAULT_SETTINGS = {
   depth: "very-deep"
 };
 
+const browser = globalThis.browser || globalThis.chrome;
+
 function storageGet(keys) {
-  return new Promise((resolve) => chrome.storage.local.get(keys, resolve));
+  return new Promise((resolve) => browser.storage.local.get(keys, resolve));
 }
 
 function storageSet(values) {
-  return new Promise((resolve) => chrome.storage.local.set(values, resolve));
+  return new Promise((resolve) => browser.storage.local.set(values, resolve));
 }
 
 function formatDate(timestamp) {
@@ -103,7 +105,7 @@ async function testApiKey() {
   status.textContent = "Testing API key…";
 
   try {
-    const result = await chrome.runtime.sendMessage({ type: "DEEP_EXPLAIN_HEALTHCHECK" });
+    const result = await browser.runtime.sendMessage({ type: "DEEP_EXPLAIN_HEALTHCHECK" });
     if (!result?.ok) {
       status.textContent = `Test failed: ${result?.error || "Unknown error"}`;
       return;
